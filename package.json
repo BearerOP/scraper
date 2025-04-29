@@ -1,0 +1,40 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/BearerOP/scraper#readme",
+  "bugs": {
+    "url": "https://github.com/BearerOP/scraper/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BearerOP/scraper.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "metascraper": "^5.46.11",
+    "metascraper-author": "^5.46.11",
+    "metascraper-clearbit": "^5.46.11",
+    "metascraper-date": "^5.46.11",
+    "metascraper-description": "^5.46.11",
+    "metascraper-image": "^5.46.11",
+    "metascraper-logo": "^5.46.11",
+    "metascraper-publisher": "^5.46.11",
+    "metascraper-title": "^5.46.11",
+    "metascraper-url": "^5.46.11",
+    "nodemon": "^3.1.10",
+    "path-to-regexp": "^8.2.0",
+    "puppeteer": "^24.7.2"
+  }
+}
