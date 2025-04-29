@@ -3,8 +3,7 @@ dotenv.config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const { scrapeLogic } = require("./scrapeLogic");
-
+const {scrapePage} = require("./scrapeLogic");
 // Enable CORS
 app.use(cors());
 app.use(express.json());
@@ -13,7 +12,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Vraksh Scraping API!" });
 });
 
-app.get("/api/scrape", scrapeLogic);
+app.get("/api/scrape", scrapePage );
 
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
