@@ -1,13 +1,16 @@
-# Use the official Node.js 20 image as the base
+# Use official Node.js 20 image as the base
 FROM node:20-slim
 
-# Set environment variables
+# Environment variables
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable \
+    NODE_ENV=production
 
-# Install necessary dependencies
+# Install required dependencies & Google Chrome
 RUN apt-get update && apt-get install -y \
     wget \
+    curl \
+    gnupg \
     ca-certificates \
     fonts-liberation \
     libappindicator3-1 \
@@ -25,26 +28,25 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     xdg-utils \
     --no-install-recommends && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome Stable
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get update && apt-get install -y google-chrome-stable && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+# Set working directory
 WORKDIR /usr/src/app
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --omit=dev
 
-# Copy the rest of the application code
+# Copy app code
 COPY . .
 
-# Expose the port the app runs on
+# Expose the port
 EXPOSE 8081
 
-# Start the application
+# Start the server
 CMD ["node", "index.js"]
